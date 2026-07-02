@@ -2,9 +2,8 @@ name: Meta API Traffic Generator
 
 on:
   schedule:
-    # Runs at 00:00 UTC every 5th day of the month
     - cron: '0 0 */5 * *'
-  workflow_dispatch: # This allows you to click a button to run it manually anytime!
+  workflow_dispatch:
 
 jobs:
   run-traffic-script:
@@ -18,15 +17,14 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-        cache: 'pip' # Automatically caches packages to speed up builds
+        cache: 'pip' # This will now work perfectly and find your file!
 
-    - name: Install official Meta Business SDK
+    - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install facebook_business
+        pip install -r requirements.txt
 
     - name: Execute Traffic Generation Script
-      # Securely maps your GitHub Secrets into the Python script execution window
       env:
         META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
         META_APP_ID: ${{ secrets.META_APP_ID }}
